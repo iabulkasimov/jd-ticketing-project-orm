@@ -93,7 +93,7 @@
                                                 <div class="form-group">
                                                     <label for="password" class="col-form-label">Password</label>
                                                     <input id="password" type="password" placeholder="password"
-                                                           th:field="*{password}"
+                                                           th:field="*{passWord}"
                                                            class="form-control"
                                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
                                                     <div class="invalid-feedback">
@@ -109,7 +109,7 @@
                                                     <label for="repassword" class="col-form-label">Password</label>
                                                     <input id="repassword" type="password"
                                                            placeholder="confirm your password" class="form-control"
-                                                           th:field="*{password}"
+                                                           th:field="*{passWord}"
                                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
                                                     <div class="invalid-feedback">
                                                         Must contain at least one number and one uppercase and lowercase
