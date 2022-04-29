@@ -5,8 +5,10 @@ import com.cybertek.entity.User;
 import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.UserRepository;
 import com.cybertek.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import xin.altitude.cms.common.util.SpringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,19 +16,28 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService{
 
+//    @Autowired
+//    UserRepository userRepository;
+//    @Autowired
+//    UserMapper userMapper;
 
-    UserRepository userRepository;
-    UserMapper userMapper;
+//    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+//        this.userRepository = userRepository;
+//        this.userMapper = userMapper;
+//    }
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
+    public UserRepository getUserRepository(){
+        return SpringUtils.getBean(UserRepository.class);
+    }
+
+    public UserMapper getUserUserMapper(){
+        return SpringUtils.getBean(UserMapper.class);
     }
 
     @Override
     public List<UserDTO> listAllUsers() {
-        List<User> list = userRepository.findAll(Sort.by("firstName"));
-        return list.stream().map(obj -> {return userMapper.convertToDto(obj);}).collect(Collectors.toList());
+        List<User> list = getUserRepository().findAll(Sort.by("firstName"));
+        return list.stream().map(obj ->{return getUserUserMapper().convertToDto(obj);}).collect(Collectors.toList());
     }
 
     @Override
