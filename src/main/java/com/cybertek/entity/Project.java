@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Setter
 @Where(clause = "is_deleted=false")
 public class Project extends BaseEntity {
+
     @Column(unique = true)
     private String projectCode;
 
@@ -27,8 +28,10 @@ public class Project extends BaseEntity {
 
     private LocalDate startDate;
     private LocalDate endDate;
+
     @Enumerated(EnumType.STRING)
     private Status projectStatus;
+
     private String projectDetail;
 
 
