@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -81,6 +82,27 @@ public class TaskController {
         taskService.update(id);
 
         return "redirect:/task/create";
+    }
+
+    @GetMapping("/employee")
+    public String edit(Model model){
+        List<TaskDTO> tasks = taskService.listAllTasksByStatusIsNot(Status.COMPLETE);
+        model.addAttribute("tasks", tasks);
+        return "task/employee-tasks";
+    }
+
+    @GetMapping("/employee/edit/{id}")
+    public String employee_update(@PathVariable("id") Long id, Model model){
+        TaskDTO task = taskService.findById(id);
+        List<TaskDTO> tasks = taskService.listAllTasksByProjectManager();
+
+        model.addAttribute("tsk",task);
+        model.addAttribute("users",userService.listAllByRole("employee"));
+        model.addAttribute("projects",projectService.listAllProjects());
+        model.addAttribute("statuses", Status.values());
+
+        return "task/employee-update";
+
     }
 
 }
