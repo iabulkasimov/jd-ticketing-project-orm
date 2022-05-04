@@ -70,7 +70,11 @@ public class ProjectServiceImpl implements ProjectService {
     public void delete(String code) {
         Project project = projectRepository.findByProjectCode(code);
         project.setIsDeleted(true);
+
+        project.setProjectCode(project.getProjectCode() + "-" + project.getId());
         projectRepository.save(project);
+
+        taskService.deleteByProject(projectMapper.convertToDto(project));
     }
 
     @Override
@@ -93,5 +97,6 @@ public class ProjectServiceImpl implements ProjectService {
             return obj;
         }).collect(Collectors.toList());
     }
+
 }
 

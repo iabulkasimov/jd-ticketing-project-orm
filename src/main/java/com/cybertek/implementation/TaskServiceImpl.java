@@ -24,10 +24,13 @@ public class TaskServiceImpl implements TaskService {
 
     TaskRepository taskRepository;
     TaskMapper taskMapper;
+    ProjectMapper projectMapper;
 
-    public TaskServiceImpl(@Lazy TaskRepository taskRepository, TaskMapper taskMapper) {
+    public TaskServiceImpl(@Lazy TaskRepository taskRepository, TaskMapper taskMapper,
+                           ProjectMapper projectMapper) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
+        this.projectMapper = projectMapper;
     }
 
     @Override
@@ -87,4 +90,18 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.totalCompletedTaks(projectCode);
     }
 
+    @Override
+    public void deleteByProject(ProjectDTO project) {
+        List<TaskDTO> taskDTOS = listAllByProject(project);
+        taskDTOS.forEach(taskDTO -> delete(taskDTO.getId()));
+    }
+
+    @Override
+    public List<TaskDTO> listAllByProject(ProjectDTO project){
+        List<Task> list = taskRepository.findAllByProject(projectMapper.convertToEntity(project));
+        return list.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
+        //return list.stream().map(obj -> {
+        //    return taskMapper.convertToDto(obj);
+        //}).collect(Collectors.toList());
+    }
 }

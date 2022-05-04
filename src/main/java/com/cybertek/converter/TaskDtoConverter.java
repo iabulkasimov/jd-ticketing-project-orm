@@ -3,6 +3,7 @@ package com.cybertek.converter;
 import com.cybertek.dto.TaskDTO;
 import com.cybertek.service.TaskService;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ public class TaskDtoConverter implements Converter<String, TaskDTO> {
 
     private TaskService taskService;
 
-    public TaskDtoConverter(TaskService taskService) {
+    public TaskDtoConverter(@Lazy TaskService taskService) {
         this.taskService = taskService;
     }
 

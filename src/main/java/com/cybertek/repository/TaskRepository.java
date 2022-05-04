@@ -18,4 +18,6 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
             "FROM tasks t JOIN projects p on t.project_id=p.id " +
             "WHERE p.project_code = ?1 AND t.task_status = 'COMPLETED'", nativeQuery = true)
     int totalCompletedTaks(String projectCode);
+
+    List<Task> findAllByProject(Project project);
 }
