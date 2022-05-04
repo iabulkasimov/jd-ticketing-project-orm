@@ -3,7 +3,9 @@ package com.cybertek.mapper;
 import com.cybertek.dto.TaskDTO;
 import com.cybertek.entity.Task;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TaskMapper {
 
     private ModelMapper modelMapper;
