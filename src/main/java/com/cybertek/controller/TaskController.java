@@ -96,9 +96,10 @@ public class TaskController {
         TaskDTO task = taskService.findById(id);
         List<TaskDTO> tasks = taskService.listAllTasksByProjectManager();
 
-        model.addAttribute("tsk",task);
+        model.addAttribute("task",task);
         model.addAttribute("users",userService.listAllByRole("employee"));
         model.addAttribute("projects",projectService.listAllProjects());
+        model.addAttribute("tasks",tasks);
         model.addAttribute("statuses", Status.values());
 
         return "task/employee-update";
