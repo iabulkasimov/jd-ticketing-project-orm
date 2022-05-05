@@ -1,9 +1,13 @@
 package com.cybertek.implementation;
 
+import com.cybertek.dto.ProjectDTO;
+import com.cybertek.dto.TaskDTO;
 import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.User;
 import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.UserRepository;
+import com.cybertek.service.ProjectService;
+import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,7 +25,8 @@ public class UserServiceImpl implements UserService{
 //    @Autowired
     UserMapper userMapper;
 
-    public UserServiceImpl(@Lazy UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(@Lazy UserRepository userRepository, UserMapper userMapper
+            ){
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
@@ -77,4 +82,5 @@ public class UserServiceImpl implements UserService{
         //converting user by one to dto and returning list
         return user.stream().map(obj -> {return userMapper.convertToDto(obj);}).collect(Collectors.toList());
     }
+
 }

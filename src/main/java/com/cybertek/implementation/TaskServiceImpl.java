@@ -141,4 +141,5 @@ public class TaskServiceImpl implements TaskService {
         List<Task> list = taskRepository.findAllByTaskStatusAndAndAssignedEmployee(status, user);
         return list.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
     }
+
 }
