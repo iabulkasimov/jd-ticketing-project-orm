@@ -24,17 +24,28 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectMapper projectMapper;
     private ProjectRepository projectRepository;
     private UserMapper userMapper;
-    private UserService userService;
     private TaskService taskService;
+    private UserService userService;
 
-    public ProjectServiceImpl(@Lazy ProjectMapper projectMapper, ProjectRepository projectRepository,
-                              UserMapper userMapper, UserService userService, TaskService taskService) {
+    public ProjectServiceImpl(ProjectMapper projectMapper, ProjectRepository projectRepository,
+                              UserMapper userMapper, TaskService taskService, UserService userService) {
         this.projectMapper = projectMapper;
         this.projectRepository = projectRepository;
         this.userMapper = userMapper;
-        this.userService = userService;
         this.taskService = taskService;
+        this.userService = userService;
     }
+//    public void setUserService(UserService userService) {
+//        this.userService = userService;
+//    }
+//
+//    public ProjectServiceImpl(ProjectMapper projectMapper, ProjectRepository projectRepository,
+//                              UserMapper userMapper, TaskService taskService) {
+//        this.projectMapper = projectMapper;
+//        this.projectRepository = projectRepository;
+//        this.userMapper = userMapper;
+//        this.taskService = taskService;
+//    }
 
     @Override
     public ProjectDTO getByProjectCode(String code) {
@@ -96,6 +107,12 @@ public class ProjectServiceImpl implements ProjectService {
             obj.setCompleteTaskCounts(taskService.totalCompletedTasks(project.getProjectCode()));
             return obj;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectDTO> readAllByAssignedManager(User user) {
+        List<Project> list = projectRepository.findAllByAssignedManager(user);
+        return list.stream().map(obj -> projectMapper.convertToDto(obj)).collect(Collectors.toList());
     }
 
 }

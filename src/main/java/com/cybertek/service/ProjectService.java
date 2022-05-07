@@ -18,4 +18,6 @@ public interface ProjectService {
 
     List<ProjectDTO>ListAllProjectDetails();
 
+    List<ProjectDTO> readAllByAssignedManager(User user);
+
 }
