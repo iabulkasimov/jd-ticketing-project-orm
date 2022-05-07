@@ -5,6 +5,7 @@ import com.cybertek.dto.TaskDTO;
 import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.User;
 import com.cybertek.exception.TicketingProjectException;
+import com.cybertek.mapper.MapperUtil;
 import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.UserRepository;
 import com.cybertek.service.ProjectService;
@@ -21,34 +22,47 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService{
 
-    UserRepository userRepository;
-    UserMapper userMapper;
-    ProjectService projectService;
-    TaskService taskService;
+    private UserRepository userRepository;
+    private ProjectService projectService;
+    private TaskService taskService;
+//    private UserMapper userMapper;
+    private MapperUtil mapperUtil;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper,
-                           @Lazy ProjectService projectService, TaskService taskService){
+    public UserServiceImpl(UserRepository userRepository, ProjectService projectService,
+                           TaskService taskService, MapperUtil mapperUtil) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
         this.projectService = projectService;
         this.taskService = taskService;
+        this.mapperUtil = mapperUtil;
     }
+//    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper,
+//                           @Lazy ProjectService projectService, TaskService taskService){
+//        this.userRepository = userRepository;
+//        this.userMapper = userMapper;
+//        this.projectService = projectService;
+//        this.taskService = taskService;
+//    }
 
     @Override
     public List<UserDTO> listAllUsers() {
         List<User> list = userRepository.findAll(Sort.by("firstName"));
-        return list.stream().map(obj ->{return userMapper.convertToDto(obj);}).collect(Collectors.toList());
+        //return list.stream().map(obj ->{return userMapper.convertToDto(obj);}).collect(Collectors.toList());
+
+        //return list.stream().map(obj ->{return mapperUtil.convert(obj,new UserDTO());}).collect(Collectors.toList());
+        return list.stream().map(obj -> mapperUtil.convert(obj,new UserDTO())).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO findByUserName(String username) {
         User user = userRepository.findByUserName(username);
-        return userMapper.convertToDto(user);
+//        return userMapper.convertToDto(user);
+        return mapperUtil.convert(user,new UserDTO());
     }
 
     @Override
     public void save(UserDTO dto) {
-        User obj = userMapper.convertToEntity(dto);
+//        User obj = userMapper.convertToEntity(dto);
+        User obj = mapperUtil.convert(dto,new User());
         userRepository.save(obj);
     }
 
@@ -58,7 +72,8 @@ public class UserServiceImpl implements UserService{
         //find current user
         User user = userRepository.findByUserName(dto.getUserName());
         //map update user dto to entity object
-        User convertedToUser = userMapper.convertToEntity(dto);
+//        User convertedToUser = userMapper.convertToEntity(dto);
+        User convertedToUser = mapperUtil.convert(dto,new User());
         //set id to the converted object
         convertedToUser.setId(user.getId());
         //save updated user
@@ -94,7 +109,8 @@ public class UserServiceImpl implements UserService{
     public List<UserDTO> listAllByRole(String role) {
         List<User> user = userRepository.findAllByRoleDescriptionIgnoreCase(role);
         //converting user by one to dto and returning list
-        return user.stream().map(obj -> {return userMapper.convertToDto(obj);}).collect(Collectors.toList());
+        //return user.stream().map(obj -> {return mapperUtil.convert(obj,new UserDTO());}).collect(Collectors.toList());
+        return user.stream().map(obj -> mapperUtil.convert(obj,new UserDTO())).collect(Collectors.toList());
     }
 
     @Override
